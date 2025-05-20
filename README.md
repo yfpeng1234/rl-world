@@ -1,4 +1,4 @@
-# 🌏 RLVR-World: Training World Models with Reinforcement Learning
+# RLVR-World: Training World Models with Reinforcement Learning
 
 [[Project Page]](https://thuml.github.io/RLVR-World/) [[Paper]](https://arxiv.org/abs/2505.xxxxx) <!-- [[Data & Models]](https://huggingface.co/collections/thuml/ivideogpt-674c59cae32231024d82d6c5) -->
 
@@ -21,7 +21,7 @@ Coming within one week!
 - 🚩 **2025.05.21**: We open-source our training codes.
 - 🚩 **2025.05.21**: Our paper is released on [arXiv](https://arxiv.org/abs/2505.xxxxx).
 
-## TL;DR
+## 📋 TL;DR
 
 We pioneer training world models through RLVR:
 
@@ -30,7 +30,7 @@ We pioneer training world models through RLVR:
 
 ![concept](assets/concept.png)
 
-## Evaluating Language World Models
+## 💬 Evaluating Language World Models
 
 See `lang_wm` (stay tuned!):
 
@@ -38,7 +38,7 @@ See `lang_wm` (stay tuned!):
 - Web page state prediction
 - Application: Model predictive control for web agents
 
-## Evaluating Video World Models
+## 🎇 Evaluating Video World Models
 
 See [`vid_wm`](/vid_wm):
 
