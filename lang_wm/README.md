@@ -1,6 +1,6 @@
 # Language World Models with RLVR
 
-## Overview
+## Method Overview
 
 ![language world model](assets/lang_wm.png)
 

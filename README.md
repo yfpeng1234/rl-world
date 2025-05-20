@@ -23,7 +23,10 @@ Coming within one week!
 
 ## TL;DR
 
-RLVR-World is 
+We pioneer training world models through RLVR:
+
+- World models across various modalities (particularly, language and videos) are unified under a sequence modeling formulation;
+- Task-specific prediction metrics serve as verifiable rewards directly optimized by RL.
 
 ![concept](assets/concept.png)
 
