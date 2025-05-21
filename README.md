@@ -1,6 +1,6 @@
 # RLVR-World: Training World Models with Reinforcement Learning
 
-[[Project Page]](https://thuml.github.io/RLVR-World/) [[Paper]](https://arxiv.org/abs/2505.xxxxx) <!-- [[Data & Models]](https://huggingface.co/collections/thuml/ivideogpt-674c59cae32231024d82d6c5) -->
+[[Project Page]](https://thuml.github.io/RLVR-World/) [[Paper]](https://arxiv.org/abs/2505.13934) <!-- [[Data & Models]](https://huggingface.co/collections/thuml/ivideogpt-674c59cae32231024d82d6c5) -->
 
 ## 🚀 Release Progress
 
@@ -19,7 +19,7 @@ Coming within one week!
 ## 🔥 News
 
 - 🚩 **2025.05.21**: We open-source our training codes.
-- 🚩 **2025.05.21**: Our paper is released on [arXiv](https://arxiv.org/abs/2505.xxxxx).
+- 🚩 **2025.05.21**: Our paper is released on [arXiv](https://arxiv.org/abs/2505.13934).
 
 ## 📋 TL;DR
 
@@ -57,7 +57,7 @@ If you find this project useful, please cite our paper as:
 @article{wu2025rlvr,
     title={RLVR-World: Training World Models with Reinforcement Learning}, 
     author={Jialong Wu and Shaofeng Yin and Ningya Feng and Mingsheng Long},
-    journal={arXiv preprint arXiv:2505.xxxxx},
+    journal={arXiv preprint arXiv:2505.13934},
     year={2025},
 }
 ```
