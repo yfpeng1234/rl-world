@@ -1,6 +1,6 @@
 # RLVR-World: Training World Models with Reinforcement Learning
 
-[[Project Page]](https://thuml.github.io/RLVR-World/) [[Paper]](https://arxiv.org/abs/2505.13934) <!-- [[Data & Models]](https://huggingface.co/collections/thuml/ivideogpt-674c59cae32231024d82d6c5) -->
+[[Project Page]](https://thuml.github.io/RLVR-World/) [[Paper]](https://arxiv.org/abs/2505.13934) [[Hugging Face]](https://huggingface.co/collections/thuml/rlvr-world-682f331c75a904b8febc366a)
 
 ## 🚀 Release Progress
 
@@ -8,7 +8,7 @@ Coming within one week!
 
 - [x] Video world model with RLVR
 - [x] Real2sim policy evaluation with video world model
-- [ ] Pre-trained & post-trained video world model weights
+- [x] Pre-trained & post-trained video world model weights
 - [ ] Text game SFT data
 - [ ] Web page SFT data
 - [ ] Language world model on text games with RLVR
