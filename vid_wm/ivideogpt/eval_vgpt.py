@@ -483,7 +483,7 @@ def start_train():
         accelerator.init_trackers("clm_no_trainer", experiment_config)
 
     model_path = args.pretrained_transformer_path
-    if not os.path.exists(os.path.join(model_path, 'config.json')):
+    if os.path.exists(model_path) and not os.path.exists(os.path.join(model_path, 'config.json')):
         unwrapped_model_path = os.path.join(model_path, 'unwrapped_model')
         os.makedirs(unwrapped_model_path, exist_ok=True)
         cmd = f"python transform_vgpt_checkpoint.py --resume_from_checkpoint {model_path} --save_dir {unwrapped_model_path} --dataset_path {args.dataset_path} --pretrained_model_name_or_path {args.pretrained_model_name_or_path} --processor_type {args.processor_type} --config_name {args.config_name}"
@@ -497,13 +497,15 @@ def start_train():
     if args.start_completed_steps is not None:
         completed_steps = args.start_completed_steps
     else:
-        completed_steps = os.path.basename(model_path).split('_')[1]
+        completed_steps = os.path.basename(model_path).split('_')[1] if os.path.exists(model_path) else 0
     eval_logs = evaluate(args, accelerator, processor, tokenizer, model,
                          eval_dataloader, evaluator, completed_steps=completed_steps)
     if eval_logs is not None:
         print(args.pretrained_model_name_or_path)
         print(args.pretrained_transformer_path)
         print(eval_logs)
+        # make parent dir
+        os.makedirs(os.path.dirname(args.output_jsonl), exist_ok=True)
         # output to jsonl
         with open(args.output_jsonl, 'a') as f:
             eval_logs["completed_steps"] = completed_steps

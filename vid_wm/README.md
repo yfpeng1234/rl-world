@@ -4,14 +4,23 @@
 
 ![video world model](assets/vid_wm.png)
 
-<!-- ## Installation -->
+## Installation
+
+```bash
+conda create -n vid_wm python==3.10
+conda activate vid_wm
+cd verl
+pip install -e ".[vllm,gpu]"
+cd ..
+pip install -r requirements.txt
+```
 
 ## Data Preparation
 
 Download the RT1 dataset from [Open X-Embodiment](https://github.com/google-deepmind/open_x_embodiment) and extract single episodes as `.npz` files:
 
 ```bash
-python oxe_data_converter.py --dataset_name {dataset name, e.g. bridge} --input_path {path to downloaded OXE} --output_path {path to stored npz}
+python oxe_data_converter.py --dataset_name fractal20220817_data --input_path {path to downloaded OXE} --output_path {path to stored npz}
 ```
 
 ## Pre-training
@@ -20,16 +29,24 @@ Single-step prediction:
 
 ```bash
 cd ivideogpt
-bash scripts/train_perframe_tokenizer.sh
-bash scripts/train_single_step_prediction.sh
+bash scripts/train_perframe_tokenizer.sh --dataset_path {path to preprocessed data}
+```
+
+```bash
+cd ivideogpt
+bash scripts/train_single_step_prediction.sh --dataset_path {path to preprocessed data}
 ```
 
 Multi-step prediction:
 
 ```bash
 cd ivideogpt
-bash scripts/train_compressive_tokenizer.sh
-bash scripts/train_multi_step_prediction.sh
+bash scripts/train_compressive_tokenizer.sh --dataset_path {path to preprocessed data}
+```
+
+```bash
+cd ivideogpt
+bash scripts/train_multi_step_prediction.sh --dataset_path {path to preprocessed data}
 ```
 
 ## Post-training with RLVR
@@ -67,16 +84,22 @@ bash examples/grpo_trainer/run_ctx_msp_vgpt.sh \
 
 ```bash
 cd ivideogpt
-bash eval_single_step_prediction.sh
-bash eval_multi_step_prediction.sh
+bash scripts/eval_single_step_prediction.sh --dataset_path {path to preprocessed data}
+bash scripts/eval_multi_step_prediction.sh --dataset_path {path to preprocessed data}
 ```
 
 ## Application: Real2Sim Policy Evaluation
 
+Follow the instructions in [simpler-env](https://github.com/simpler-env/SimplerEnv?tab=readme-ov-file#rt-1-inference-setup) to download RT-1 checkpoints.
+
 ```bash
 cd ivideogpt
-bash scripts/eval_policy.sh
+bash scripts/eval_policy.sh --task_instruction "open middle drawer" --policy_model_path pretrained_models/rt_1_tf_trained_for_000400120
 ```
+
+## Tips
+
+- If you encouter `ImportError: cannot import name 'cached_download' from 'huggingface_hub' (/workspace/wujialong/anaconda3/envs/vid_wm5/lib/python3.10/site-packages/huggingface_hub/__init__.py)` due to version incompatibility, just remove import of `cached_download`.
 
 ## Acknowledgement
 
