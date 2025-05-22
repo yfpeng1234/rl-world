@@ -14,7 +14,7 @@ Coming within one week!
 - [ ] Language world model on text games with RLVR
 - [ ] Language world model on web pages with RLVR
 - [ ] Pre-trained & post-trained language world model weights
-- [ ] Web agents with language world model
+- [x] Web agents with language world model
 
 ## 🔥 News
 
