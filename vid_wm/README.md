@@ -94,7 +94,10 @@ Follow the instructions in [simpler-env](https://github.com/simpler-env/SimplerE
 
 ```bash
 cd ivideogpt
-bash scripts/eval_policy.sh --task_instruction "open middle drawer" --policy_model_path pretrained_models/rt_1_tf_trained_for_000400120
+bash scripts/eval_policy.sh \
+    --task_instruction "open middle drawer" \
+    --policy_model_path pretrained_models/rt_1_tf_trained_for_000400120 \
+    --dataset_path {path to preprocessed data}
 ```
 
 ## Tips
