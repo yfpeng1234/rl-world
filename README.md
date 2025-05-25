@@ -38,14 +38,14 @@ We pioneer training world models through RLVR:
 
 At the moment we provide the following models and datasets:
 
-| Modality | Type        | Domain             | Name                                                         |
-| -------- | ----------- | ------------------ | ------------------------------------------------------------ |
-| Video    | Tokenizer   | Robot manipulation | [rt1-frame-tokenizer](https://huggingface.co/thuml/rt1-frame-tokenizer) |
-| Video    | World model | Robot manipulation | [rt1-world-model-single-step-base](https://huggingface.co/thuml/rt1-world-model-single-step-base) |
-| Video    | World model | Robot manipulation | [rt1-world-model-single-step-rlvr](https://huggingface.co/thuml/rt1-world-model-single-step-rlvr) |
-| Video    | Tokenizer   | Robot manipulation | [rt1-compressive-tokenizer](https://huggingface.co/thuml/rt1-compressive-tokenizer) |
-| Video    | World model | Robot manipulation | [rt1-world-model-multi-step-base](https://huggingface.co/thuml/rt1-world-model-multi-step-base) |
-| Video    | World model | Robot manipulation | [rt1-world-model-multi-step-rlvr](https://huggingface.co/thuml/rt1-world-model-multi-step-rlvr) |
+| Modality | Domain             | Type        | Name                                                         |
+| -------- | ------------------ | ----------- | ------------------------------------------------------------ |
+| Video    | Robot manipulation | Tokenizer   | [rt1-frame-tokenizer](https://huggingface.co/thuml/rt1-frame-tokenizer) |
+| Video    | Robot manipulation | World model | [rt1-world-model-single-step-base](https://huggingface.co/thuml/rt1-world-model-single-step-base) |
+| Video    | Robot manipulation | World model | [rt1-world-model-single-step-rlvr](https://huggingface.co/thuml/rt1-world-model-single-step-rlvr) |
+| Video    | Robot manipulation | Tokenizer   | [rt1-compressive-tokenizer](https://huggingface.co/thuml/rt1-compressive-tokenizer) |
+| Video    | Robot manipulation | World model | [rt1-world-model-multi-step-base](https://huggingface.co/thuml/rt1-world-model-multi-step-base) |
+| Video    | Robot manipulation | World model | [rt1-world-model-multi-step-rlvr](https://huggingface.co/thuml/rt1-world-model-multi-step-rlvr) |
 
 ## 💬 Evaluating Language World Models
 
