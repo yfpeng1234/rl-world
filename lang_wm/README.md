@@ -15,13 +15,6 @@ pip install -e .
 ```
 
 ## Data Preparation
-###  Web Page
-The SFT and RLVR training datasets have been uploaded to Hugging Face.
-
-The content of both datasets is essentially the same, with only the key names differing to match their respective training scripts.
-
-Please download them and place them directly in this folder.
-
 ### Text Game Simulator
 All data has been uploaded to [TODO]. You can either download them directly or generate them by following the instructions below:
 
@@ -54,20 +47,29 @@ python calculate_r1_response.py
 python generate_sft_data.py
 ```
 
-## Pre-training
-### Web Page
+###  Web Page
+The SFT and RLVR training datasets have been uploaded to Hugging Face.
 
-To train the model, run the following command:
+The content of both datasets is essentially the same, with only the key names differing to match their respective training scripts.
 
-```
-bash verl/examples/sft/webagent/run_web_agent_sft.sh
-```
+Please download them and place them directly in this folder.
+
+## Supervised Fine-Tuning (SFT)
+
 
 ### Text Game Simulator
 Run the following command. Please modify the following paths: training set, validation set, model, and output. (Since we select the best epoch based on accuracy on the validation set rather than loss, we do not separately split a validation set for SFT. You can simply use the same path for both the training and validation sets.)
 
 ```
 bash verl/examples/sft/text_game_simulator/run_text_game_simulator_sft.sh
+```
+
+### Web Page
+
+To train the model, run the following command:
+
+```
+bash verl/examples/sft/webagent/run_web_agent_sft.sh
 ```
 
 After training, the model will be saved in `default_local_dir` specified in the script.
@@ -82,15 +84,17 @@ You have to specify the directory for LoRA weights in the script.
 
 
 ## Post-training with RLVR
-### Web Page
-Run the following command to train:
+
+
+### Text Game Simulator
+Run the following command. This command uses binary reward by default. If you want to use the task-specific reward described in the paper, simply modify the two parameters ``data.sample_no_gold_data_num`` and ``reward_model.reward_type`` as indicated in the comments.
 
 ```
 bash examples/grpo_trainer/run_web_agnet_rl.sh
 ```
 
-### Text Game Simulator
-Run the following command. This command uses binary reward by default. If you want to use the task-specific reward described in the paper, simply modify the two parameters ``data.sample_no_gold_data_num`` and ``reward_model.reward_type`` as indicated in the comments.
+### Web Page
+Run the following command to train:
 
 ```
 bash examples/grpo_trainer/run_web_agnet_rl.sh
@@ -107,12 +111,6 @@ python verl/scripts/model_merger.py --local_dir log/rl/DeepSeek-R1-Distill-Qwen-
 
 ## Web Agents with language world model
 Code and instruction can be found in ``webagent/``
-
-## Pre-trained & post-trained language world model weights
-### Web Page
-SFT:  RL:
-### Text Game Simulator
-SFT:  RL:
 
 ## Acknowledgements
 
