@@ -32,13 +32,12 @@ def snapshot_src(src, target, exclude_from):
     os.system(cmd)
 
 
-@hydra.main(config_path='config', config_name='ppo_trainer')
+@hydra.main(config_path='config', config_name='ppo_trainer', version_base=None)
 def main(config):
     run_ppo(config)
 
 
 def run_ppo(config, compute_score=None):
-    ray.init(address="auto")
     if not ray.is_initialized():
         # this is for local ray cluster
         ray.init(runtime_env={'env_vars': {'TOKENIZERS_PARALLELISM': 'true', 'NCCL_DEBUG': 'WARN'}})
@@ -139,10 +138,10 @@ def main_task(config, compute_score=None):
         reward_manager_cls = PrimeRewardManager
     else:
         raise NotImplementedError
-    reward_fn = reward_manager_cls(tokenizer=tokenizer, num_examine=0, compute_score=compute_score)
+    reward_fn = reward_manager_cls(tokenizer=tokenizer, num_examine=0, compute_score=compute_score, reward_type=config.reward_model.get("reward_type", "binary"))
 
     # Note that we always use function-based RM for validation
-    val_reward_fn = reward_manager_cls(tokenizer=tokenizer, num_examine=1, compute_score=compute_score)
+    val_reward_fn = reward_manager_cls(tokenizer=tokenizer, num_examine=1, compute_score=compute_score, reward_type=config.reward_model.get("reward_type", "binary"))
 
     resource_pool_manager = ResourcePoolManager(resource_pool_spec=resource_pool_spec, mapping=mapping)
 

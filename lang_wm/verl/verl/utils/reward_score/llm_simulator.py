@@ -57,6 +57,7 @@ def get_state_diff_detail_v2(state_1, state_2):
 
         # compare contained objects
         # We don't care the order of contains
+        #if sorted(state_1[uuid]["contains"]) != sorted(state_2[uuid]["contains"]):
         if sorted(state_1[uuid].get("contains", [])) != sorted(state_2[uuid].get("contains", [])):
             diffs["modified"].append(('contains', state_1[uuid], state_2[uuid], 0))
             is_same = False
@@ -270,112 +271,107 @@ def evaluate(prediction, target, last_action, evaluate_score=False):
         return num_errors, out_str
 
 
-def compute_score_(solution_str, ground_truth, extra_info):
-    if True:
-        if "The final answer is:" in solution_str:
-            answer = solution_str.split("The final answer is:")[-1].strip()
-        elif "the final answer is:" in solution_str:
-            answer = solution_str.split("the final answer is:")[-1].strip()
-        elif "The final state is:" in solution_str:
-            answer = solution_str.split("The final state is:")[-1].strip()
-        elif "the final state is:" in solution_str:
-            answer = solution_str.split("the final state is:")[-1].strip()
-        elif "The final game state is:" in solution_str:
-            answer = solution_str.split("The final game state is:")[-1].strip()
-        elif "the final game state is:" in solution_str:
-            answer = solution_str.split("the final game state is:")[-1].strip()
+def compute_score_(solution_str, ground_truth, extra_info, reward_type="binary"):
+    if "The final answer is:" in solution_str:
+        answer = solution_str.split("The final answer is:")[-1].strip()
+    elif "the final answer is:" in solution_str:
+        answer = solution_str.split("the final answer is:")[-1].strip()
+    elif "The final state is:" in solution_str:
+        answer = solution_str.split("The final state is:")[-1].strip()
+    elif "the final state is:" in solution_str:
+        answer = solution_str.split("the final state is:")[-1].strip()
+    elif "The final game state is:" in solution_str:
+        answer = solution_str.split("The final game state is:")[-1].strip()
+    elif "the final game state is:" in solution_str:
+        answer = solution_str.split("the final game state is:")[-1].strip()
+    else:
+        pattern = r'```json\s*([\s\S]*?)\s*```'
+        matches = re.findall(pattern, solution_str, re.DOTALL)
+
+        if len(matches) == 0 or len(matches[-1]) < 10:
+            answer = solution_str
         else:
-            pattern = r'```json\s*([\s\S]*?)\s*```'
-            matches = re.findall(pattern, solution_str, re.DOTALL)
+            answer = matches[-1]
 
-            if len(matches) == 0 or len(matches[-1])<10:
-                answer = solution_str
-            else:
-                answer = matches[-1]
+    answer = answer.replace("True", "true")
+    answer = answer.replace("False", "false")
+    answer = answer.replace("None", "null")
+    correct_json_str = repair_json(answer)
+    prediction = dirtyjson.loads(correct_json_str)
 
-        answer = answer.replace("True", "true")
-        answer = answer.replace("False", "false")
-        answer = answer.replace("None", "null")
-        correct_json_str = repair_json(answer)
-        prediction = dirtyjson.loads(correct_json_str)
-
-        if "modified" not in prediction or "removed" not in prediction:
-            return 0
-
-        prediction = recover_game_state_from_partial(json.loads(extra_info["data_state"]), prediction, has_score=True)
-        num_errors, num_score_errors, num_correct, num_correct_score, eval_out_str = evaluate(prediction, json.loads(ground_truth), extra_info["data_action"], evaluate_score=True)
-
-        if num_errors < 0:  # 格式出错
-            return 0
-        else:
-            item_score = num_correct / (num_correct + num_errors)
-            score_score = num_correct_score / (num_correct_score + num_score_errors)
-            return int(item_score==1 and score_score==1)
-
-            # only consider gold states
-            correct_gold_num_record = []
-            curr_state = json.loads(extra_info["data_state"])
-            gold_state = json.loads(ground_truth)
-            predicted_state = prediction
-            diffs_gold = get_state_diff_detail_v2(curr_state, gold_state)
-
-            # process gold state
-            gold_stat = {}
-            for _, obj2 in diffs_gold["added"]:
-                gold_stat[obj2["uuid"]] = {'contains': 1}
-                for key in obj2["properties"]:
-                    gold_stat[obj2["uuid"]][key] = 'na'
-            for obj1, _ in diffs_gold["removed"]:
-                gold_stat[obj1["uuid"]] = {'contains': 1}
-                for key in obj1["properties"]:
-                    gold_stat[obj1["uuid"]][key] = 'na'
-            for key, state_1, state_2, state_code in diffs_gold["modified"]:
-                if state_2 is not None:
-                    uuid = state_2["uuid"]
-                else:
-                    uuid = state_1["uuid"]
-
-                if uuid not in gold_stat:
-                    gold_stat[uuid] = {}
-
-                gold_stat[uuid][key] = 0 if state_code == 1 else 1
-
-            try:
-                diffs = get_state_diff_detail_v2(gold_state, predicted_state)
-            except Exception as e:
-                wrong_output_format = True
-            else:
-                # for objects that are added or removed, the per property status are assigned "na", thus are ignored
-                for key, state_1, state_2, state_code in diffs["modified"]:
-                    if state_1 is not None:
-                        uuid = state_1['uuid']
-                    else:
-                        uuid = state_2['uuid']
-
-                    if gold_stat[uuid][key] == 1:
-                        if state_code == 1:
-                            correct_gold_num_record.append(1)
-                        else:
-                            correct_gold_num_record.append(0)
-
-            if len(correct_gold_num_record) == 0:
-                return (item_score * 0.09 + score_score * 0.01 + 0.2 * int(item_score==1 and score_score==1))
-            else:
-                return item_score * 0.09 + score_score * 0.01 + 0.2 * int(item_score==1 and score_score==1) + sum(correct_gold_num_record)/len(correct_gold_num_record)
-
-def compute_score(solution_str, ground_truth, extra_info):
-    try:
-        return compute_score_(solution_str, ground_truth, extra_info)
-    except:
+    if "modified" not in prediction or "removed" not in prediction:
         return 0
 
-if __name__ == "__main__":
-    import pandas as pd
-    from tqdm import tqdm
-    data = pd.read_parquet("/workspace/fengningya/llm-wm/processed_data_for_rl/test_gold_state.parquet")
-    for idx, example in tqdm(data.iterrows()):
-        ground_truth = example.get("reward_model", "").get("ground_truth")
-        extra_info = example.get("extra_info", {})
-        score = compute_score("```json{'modified':{},'removed':{}}```", ground_truth, extra_info)
-        print(score)
-        input("press to continue")
+    prediction = recover_game_state_from_partial(json.loads(extra_info["data_state"]), prediction, has_score=True)
+    num_errors, num_score_errors, num_correct, num_correct_score, eval_out_str = evaluate(prediction,
+                                                                                          json.loads(ground_truth),
+                                                                                          extra_info["data_action"],
+                                                                                          evaluate_score=True)
+
+    if num_errors < 0:  # 格式出错
+        return 0
+    else:
+        item_score = num_correct / (num_correct + num_errors)
+        score_score = num_correct_score / (num_correct_score + num_score_errors)
+
+        if reward_type == "binary":
+            return int(item_score == 1 and score_score == 1)
+
+        # only consider gold states
+        correct_gold_num_record = []
+        curr_state = json.loads(extra_info["data_state"])
+        gold_state = json.loads(ground_truth)
+        predicted_state = prediction
+        diffs_gold = get_state_diff_detail_v2(curr_state, gold_state)
+
+        # process gold state
+        gold_stat = {}
+        for _, obj2 in diffs_gold["added"]:
+            gold_stat[obj2["uuid"]] = {'contains': 1}
+            for key in obj2["properties"]:
+                gold_stat[obj2["uuid"]][key] = 'na'
+        for obj1, _ in diffs_gold["removed"]:
+            gold_stat[obj1["uuid"]] = {'contains': 1}
+            for key in obj1["properties"]:
+                gold_stat[obj1["uuid"]][key] = 'na'
+        for key, state_1, state_2, state_code in diffs_gold["modified"]:
+            if state_2 is not None:
+                uuid = state_2["uuid"]
+            else:
+                uuid = state_1["uuid"]
+
+            if uuid not in gold_stat:
+                gold_stat[uuid] = {}
+
+            gold_stat[uuid][key] = 0 if state_code == 1 else 1
+
+        try:
+            diffs = get_state_diff_detail_v2(gold_state, predicted_state)
+        except Exception as e:
+            wrong_output_format = True
+        else:
+            # for objects that are added or removed, the per property status are assigned "na", thus are ignored
+            for key, state_1, state_2, state_code in diffs["modified"]:
+                if state_1 is not None:
+                    uuid = state_1['uuid']
+                else:
+                    uuid = state_2['uuid']
+
+                if gold_stat[uuid][key] == 1:
+                    if state_code == 1:
+                        correct_gold_num_record.append(1)
+                    else:
+                        correct_gold_num_record.append(0)
+
+        if len(correct_gold_num_record) == 0:
+            return item_score * 0.09 + score_score * 0.01 + 0.2 * int(item_score == 1 and score_score == 1)
+        else:
+            return item_score * 0.09 + score_score * 0.01 + 0.2 * int(item_score == 1 and score_score == 1) + sum(
+                correct_gold_num_record) / len(correct_gold_num_record)
+
+
+def compute_score(solution_str, ground_truth, extra_info, reward_type="binary"):
+    try:
+        return compute_score_(solution_str, ground_truth, extra_info, reward_type)
+    except:
+        return 0

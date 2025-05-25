@@ -14,7 +14,7 @@
 # from . import gsm8k, math, prime_math, prime_code
 
 
-def _default_compute_score(data_source, solution_str, ground_truth, extra_info=None):
+def _default_compute_score(data_source, solution_str, ground_truth, extra_info=None, reward_type="binary"):
     if data_source == 'openai/gsm8k':
         from . import gsm8k
         res = gsm8k.compute_score(solution_str, ground_truth)
@@ -39,7 +39,7 @@ def _default_compute_score(data_source, solution_str, ground_truth, extra_info=N
         res = web_agent.compute_score_(solution_str, ground_truth)
     elif data_source in ['llm_simulator']:
         from . import llm_simulator
-        res = llm_simulator.compute_score(solution_str, ground_truth, extra_info)
+        res = llm_simulator.compute_score(solution_str, ground_truth, extra_info, reward_type)
     else:
         raise NotImplementedError
 
