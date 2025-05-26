@@ -51,7 +51,7 @@ After training, the model will be saved in `default_local_dir` specified in the 
 To merge the LoRA weights into the base model, run the following command:
 
 ```bash
-python verl/merge.py
+python verl/merge_lora.py
 ```
 
 You have to specify the directory for LoRA weights in the script.
