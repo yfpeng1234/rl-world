@@ -42,7 +42,7 @@ bash verl/examples/sft/text_game_simulator/run_text_game_simulator_sft.sh \
 
 To train the model, run the following command:
 
-```
+```bash
 bash verl/examples/sft/webagent/run_web_agent_sft.sh
 ```
 
@@ -79,7 +79,7 @@ bash examples/grpo_trainer/run_text_game_simulator_rl.sh \
 ### Web Page
 Run the following command to train:
 
-```
+```bash
 bash examples/grpo_trainer/run_web_agnet_rl.sh
 ```
 
