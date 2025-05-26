@@ -1,4 +1,4 @@
-# using 4x80G A100 GPUS
+# using 4x80G A100 GPUs
 
 torchrun --standalone --nnodes=1 --nproc_per_node=4 \
     -m verl.trainer.fsdp_sft_trainer \

@@ -1,4 +1,6 @@
- torchrun -m --nnodes 1 \
+# using 8x40G A100 GPUs
+
+torchrun -m --nnodes 1 \
  --nproc_per_node=8 \
 verl.trainer.fsdp_sft_trainer \
 data.train_files=thuml/webarena-world-model-cot/train.parquet \

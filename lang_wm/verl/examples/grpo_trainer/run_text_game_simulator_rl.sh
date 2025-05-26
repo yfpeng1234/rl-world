@@ -1,4 +1,5 @@
-# using 8x80G A100 GPUS
+# using 8x80G A100 GPUs
+
 set -x
 
 python3 -m verl.trainer.main_ppo \
