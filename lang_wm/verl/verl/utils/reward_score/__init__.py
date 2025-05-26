@@ -35,8 +35,7 @@ def _default_compute_score(data_source, solution_str, ground_truth, extra_info=N
         res = geo3k.compute_score(solution_str, ground_truth)
     elif data_source in ['web_agent']:
         from . import web_agent
-        # res = web_agent.compute_score(solution_str, ground_truth)
-        res = web_agent.compute_score_(solution_str, ground_truth)
+        res = web_agent.compute_score(solution_str, ground_truth)
     elif data_source in ['llm_simulator']:
         from . import text_game
         res = text_game.compute_score(solution_str, ground_truth, extra_info, text_game_reward_type)

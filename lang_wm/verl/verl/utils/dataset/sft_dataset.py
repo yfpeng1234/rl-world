@@ -105,34 +105,6 @@ class SFTDataset(Dataset):
                 raise
         self.responses = self.responses.tolist()
 
-        # Used for filtering out abnormal data
-        # length = []
-        # tokenizer = self.tokenizer
-        #
-        # for item in tqdm(range(len(self.prompts))):
-        #     prompt = self.prompts[item]
-        #     response = self.responses[item]
-        #
-        #     # apply chat template
-        #     prompt_chat = [{'role': 'user', 'content': prompt}]
-        #
-        #     # string
-        #     prompt_chat_str = tokenizer.apply_chat_template(prompt_chat, add_generation_prompt=True, tokenize=False)
-        #     response_chat_str = response + tokenizer.eos_token
-        #
-        #     # tokenize
-        #     prompt_ids_output = tokenizer(prompt_chat_str, return_tensors='pt', add_special_tokens=False)
-        #     prompt_ids = prompt_ids_output['input_ids'][0]
-        #
-        #     response_ids_output = tokenizer(response_chat_str, return_tensors='pt', add_special_tokens=False)
-        #     response_ids = response_ids_output['input_ids'][0]
-        #
-        #     prompt_length = prompt_ids.shape[0]
-        #     response_length = response_ids.shape[0]
-        #     length.append(prompt_length + response_length)
-        #
-        # abnormal_data = [i for i, l in enumerate(length) if l > 5000]
-
 
     def __len__(self):
         return len(self.prompts)

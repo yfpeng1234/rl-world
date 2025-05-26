@@ -2,12 +2,12 @@ set -x
 
 python3 -m verl.trainer.main_ppo \
     algorithm.adv_estimator=grpo \
-    data.train_files=No_Demo_5000/train.parquet \
-    data.val_files=No_Demo_5000/test.parquet \
+    data.train_files=thuml/webarena-world-model-cot/train.parquet \
+    data.val_files=thuml/webarena-world-model-cot/test.parquet \
     data.train_batch_size=64 \
     data.max_prompt_length=5000 \
     data.max_response_length=7288 \
-    actor_rollout_ref.model.path=models/webagent-sft-DeepSeek-R1-Distill-Qwen-1.5B-merged-lowest \
+    actor_rollout_ref.model.path=thuml/webarena-world-model-sft \
     actor_rollout_ref.actor.optim.lr=1e-6 \
     actor_rollout_ref.model.use_remove_padding=True \
     actor_rollout_ref.actor.ppo_mini_batch_size=16 \
@@ -28,12 +28,12 @@ python3 -m verl.trainer.main_ppo \
     algorithm.kl_ctrl.kl_coef=0.001 \
     trainer.critic_warmup=0 \
     trainer.logger="['console','wandb']"\
-    trainer.project_name='verl_grpo_web_agent' \
-    trainer.experiment_name='DeepSeek-R1-Distill-Qwen-1.5B-merged-grpo-reward-v1-final-v2' \
+    trainer.project_name='webagent-rlvr' \
+    trainer.experiment_name='webagent-rlvr' \
     trainer.n_gpus_per_node=8 \
     trainer.nnodes=1 \
     trainer.save_freq=20 \
     trainer.test_freq=20 \
     trainer.total_epochs=15 \
-    trainer.default_local_dir=log/rl/DeepSeek-R1-Distill-Qwen-1.5B-merged-grpo-reward-v1-p-0.1-final-v2 \
+    trainer.default_local_dir=log/rl/webagent-rlvr \
     actor_rollout_ref.rollout.max_num_batched_tokens=12288 $@
