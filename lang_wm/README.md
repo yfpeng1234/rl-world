@@ -19,7 +19,7 @@ pip install -e .
 
 All data has been uploaded to [Hugging Face](https://huggingface.co/datasets/thuml/bytesized32-world-model-cot).
 
-<!-- You can either download them directly or generate them by following the ``README.md`` in ``data_process_for_text_game_simulator``: -->
+You can either download them directly or generate them yourself by following the ``README.md`` in ``data_process/text_game``.
 
 ###  Web Page
 
