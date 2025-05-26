@@ -82,7 +82,7 @@ To merge weights, run the following command:
 python verl/scripts/model_merger.py --local_dir log/xxxx/checkpoints/global_step_xxxx/actor --output_dir <output_dir> --backend fsdp --hf_model_path deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B 
 ```
 
-## Web Agents with language world model
+## Downstream Task: Model Predictive Control for Web Agents
 
 Code and instruction can be found in ``webagent/``
 

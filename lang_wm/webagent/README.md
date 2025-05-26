@@ -1,6 +1,7 @@
 # Web Agents with language world model
 
-## Install
+## Installation
+
 ```bash
 # Python 3.10 or 3.11 recommended
 conda create -n webagent python=3.10
@@ -11,6 +12,7 @@ pip install -e .
 ```
 
 ## End-to-end Evaluation on WA
+
 1. Setup the WA environments.
 Please check out [this page](https://github.com/web-arena-x/webarena/blob/main/environment_docker/README.md) for details. We recommend using the AWS for enviroment setup.
 
@@ -45,14 +47,12 @@ bash prepare.sh
 ```
 
 5. Set up API keys.
-
 If using OpenAI models, set a valid OpenAI API key (starting with `sk-`) as the environment variable:
 ```
 export OPENAI_API_KEY=your_key
 ```
 
 6. create .env files for environment variables
-
 Here is an example of the `.env` file:
 
 ```
