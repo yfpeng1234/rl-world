@@ -97,3 +97,5 @@ We sincerely appreciate the following github repos for their valuable codebase w
 - https://github.com/thuml/iVideoGPT
 - https://github.com/kyle8581/WMA-Agents
 - https://github.com/cognitiveailab/GPT-simulator
+- https://github.com/web-arena-x/webarena
+- https://github.com/simpler-env/SimplerEnv
