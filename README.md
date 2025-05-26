@@ -1,6 +1,10 @@
 # RLVR-World: Training World Models with Reinforcement Learning
 
-[[Project Page]](https://thuml.github.io/RLVR-World/) [[Paper]](https://arxiv.org/abs/2505.13934) <!-- [[Data & Models]](https://huggingface.co/collections/thuml/ivideogpt-674c59cae32231024d82d6c5) -->
+[![Project Page](https://img.shields.io/badge/Project_Page-blue)](https://thuml.github.io/RLVR-World/)
+[![Paper](https://img.shields.io/badge/arXiv-Paper-b31b1b.svg?logo=arxiv)](https://arxiv.org/abs/2505.13934)
+[![Hugging Face](https://img.shields.io/badge/Hugging_Face-Models_&_Datasets-F8D44E.svg?logo=huggingface)](https://huggingface.co/collections/thuml/rlvr-world-682f331c75a904b8febc366a)
+
+This is the official code base for the paper [RLVR-World: Training World Models with Reinforcement Learning](https://arxiv.org/abs/2505.13934).
 
 ## 🚀 Release Progress
 
@@ -8,7 +12,7 @@ Coming within one week!
 
 - [x] Video world model with RLVR
 - [x] Real2sim policy evaluation with video world model
-- [ ] Pre-trained & post-trained video world model weights
+- [x] Pre-trained & post-trained video world model weights
 - [ ] Text game SFT data
 - [ ] Web page SFT data
 - [ ] Language world model on text games with RLVR
@@ -30,9 +34,22 @@ We pioneer training world models through RLVR:
 
 ![concept](assets/concept.png)
 
+## 🤗 Models and Datasets
+
+At the moment we provide the following models and datasets:
+
+| Modality | Domain             | Type        | Name                                                         |
+| -------- | ------------------ | ----------- | ------------------------------------------------------------ |
+| Video    | Robot manipulation | Tokenizer   | [rt1-frame-tokenizer](https://huggingface.co/thuml/rt1-frame-tokenizer) |
+| Video    | Robot manipulation | World model | [rt1-world-model-single-step-base](https://huggingface.co/thuml/rt1-world-model-single-step-base) |
+| Video    | Robot manipulation | World model | [rt1-world-model-single-step-rlvr](https://huggingface.co/thuml/rt1-world-model-single-step-rlvr) |
+| Video    | Robot manipulation | Tokenizer   | [rt1-compressive-tokenizer](https://huggingface.co/thuml/rt1-compressive-tokenizer) |
+| Video    | Robot manipulation | World model | [rt1-world-model-multi-step-base](https://huggingface.co/thuml/rt1-world-model-multi-step-base) |
+| Video    | Robot manipulation | World model | [rt1-world-model-multi-step-rlvr](https://huggingface.co/thuml/rt1-world-model-multi-step-rlvr) |
+
 ## 💬 Evaluating Language World Models
 
-See `lang_wm` (stay tuned!):
+See [`lang_wm`](/lang_wm) (stay tuned!):
 
 - Text game state prediction
 - Web page state prediction

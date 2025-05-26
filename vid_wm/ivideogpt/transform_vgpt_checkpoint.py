@@ -40,7 +40,7 @@ from transformers.utils.versions import require_version
 
 from ivideogpt.utils.video_metric import Evaluator, FeatureStats
 from ivideogpt.tokenizer import CNNFSQModel256
-from ivideogpt.ct_tokenizer import CompressiveVQModelFSQ
+from ivideogpt.ctx_tokenizer import CompressiveVQModelFSQ
 from ivideogpt.data import *
 from ivideogpt.processor import *
 

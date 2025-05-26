@@ -38,6 +38,7 @@ install_requires = [
   'tensordict<=0.6.2',
   'torchdata',
   'transformers',
+  'torchvision',
   'wandb',
 ]
 
