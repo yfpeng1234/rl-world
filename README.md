@@ -2,22 +2,9 @@
 
 [[Project Page]](https://thuml.github.io/RLVR-World/) [[Paper]](https://arxiv.org/abs/2505.13934) [[Hugging Face]](https://huggingface.co/collections/thuml/rlvr-world-682f331c75a904b8febc366a)
 
-## 🚀 Release Progress
-
-Coming within one week!
-
-- [x] Video world model with RLVR
-- [x] Real2sim policy evaluation with video world model
-- [x] Pre-trained & post-trained video world model weights
-- [ ] Text game SFT data
-- [ ] Web page SFT data
-- [ ] Language world model on text games with RLVR
-- [ ] Language world model on web pages with RLVR
-- [ ] Pre-trained & post-trained language world model weights
-- [ ] Web agents with language world model
-
 ## 🔥 News
 
+- 🚩 **2025.05.26**: We release all models and datasets.
 - 🚩 **2025.05.21**: We open-source our training codes.
 - 🚩 **2025.05.21**: Our paper is released on [arXiv](https://arxiv.org/abs/2505.13934).
 
@@ -36,6 +23,13 @@ At the moment we provide the following models and datasets:
 
 | Modality | Type        | Domain             | Name                                                         |
 | -------- | ----------- | ------------------ | ------------------------------------------------------------ |
+| Language | Dataset     | Text game          | [bytesized32-world-model-cot](https://huggingface.co/datasets/thuml/bytesized32-world-model-cot) |
+| Language | World model | Text game          | [bytesized32-world-model-sft](https://huggingface.co/thuml/bytesized32-world-model-sft) |
+| Language | World model | Text game          | [bytesized32-world-model-rlvr-binary-reward](https://huggingface.co/thuml/bytesized32-world-model-rlvr-binary-reward) |
+| Language | World model | Text game          | [bytesized32-world-model-rlvr-task-specfic-reward](https://huggingface.co/thuml/bytesized32-world-model-rlvr-task-specfic-reward) |
+| Language | Dataset     | Web navigation     | [webarena-world-model-cot](https://huggingface.co/datasets/thuml/webarena-world-model-cot) |
+| Language | World model | Web navigation     | [webarena-world-model-sft](https://huggingface.co/thuml/webarena-world-model-sft) |
+| Language | World model | Web navigation     | [webarena-world-model-rlvr](https://huggingface.co/thuml/webarena-world-model-rlvr) |
 | Video    | Tokenizer   | Robot manipulation | [rt1-frame-tokenizer](https://huggingface.co/thuml/rt1-frame-tokenizer) |
 | Video    | World model | Robot manipulation | [rt1-world-model-single-step-base](https://huggingface.co/thuml/rt1-world-model-single-step-base) |
 | Video    | World model | Robot manipulation | [rt1-world-model-single-step-rlvr](https://huggingface.co/thuml/rt1-world-model-single-step-rlvr) |
@@ -61,6 +55,18 @@ See [`vid_wm`](/vid_wm):
 ## 🎥 Showcases
 
 ![showcase](assets/showcase.png)
+
+## 🚀 Release Progress
+
+- [x] Video world model with RLVR
+- [x] Pre-trained & post-trained video world model weights
+- [x] Real2sim policy evaluation with video world model
+- [x] Text game SFT data
+- [x] Web page SFT data
+- [x] Language world model on text games with RLVR
+- [x] Language world model on web pages with RLVR
+- [x] Pre-trained & post-trained language world model weights
+- [x] Web agents with language world model
 
 ## 📜 Citation
 

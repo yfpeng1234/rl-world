@@ -88,7 +88,7 @@ bash scripts/eval_single_step_prediction.sh --dataset_path {path to preprocessed
 bash scripts/eval_multi_step_prediction.sh --dataset_path {path to preprocessed data}
 ```
 
-## Application: Real2Sim Policy Evaluation
+## Downstream Task: Real2Sim Policy Evaluation
 
 Follow the instructions in [simpler-env](https://github.com/simpler-env/SimplerEnv?tab=readme-ov-file#rt-1-inference-setup) to download RT-1 checkpoints.
 
