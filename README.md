@@ -1,6 +1,10 @@
 # RLVR-World: Training World Models with Reinforcement Learning
 
-[[Project Page]](https://thuml.github.io/RLVR-World/) [[Paper]](https://arxiv.org/abs/2505.13934) [[Hugging Face]](https://huggingface.co/collections/thuml/rlvr-world-682f331c75a904b8febc366a)
+[![Project Page](https://img.shields.io/badge/Project_Page-blue)](https://thuml.github.io/RLVR-World/)
+[![Paper](https://img.shields.io/badge/arXiv-Paper-b31b1b.svg?logo=arxiv)](https://arxiv.org/abs/2505.13934)
+[![Hugging Face](https://img.shields.io/badge/Hugging_Face-Models_&_Datasets-F8D44E.svg?logo=huggingface)](https://huggingface.co/collections/thuml/rlvr-world-682f331c75a904b8febc366a)
+
+This is the official code base for the paper [RLVR-World: Training World Models with Reinforcement Learning](https://arxiv.org/abs/2505.13934).
 
 ## 🔥 News
 

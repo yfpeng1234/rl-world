@@ -106,4 +106,4 @@ bash scripts/eval_policy.sh \
 
 ## Acknowledgement
 
-Our `verl` directory is forked from commit [`15263cb`](https://github.com/volcengine/verl/tree/15263cb86a464264edb1e5462675e25ddf6ff9d8) of official repo.
+Our `verl` codebase is forked from commit [`15263cb`](https://github.com/volcengine/verl/tree/15263cb86a464264edb1e5462675e25ddf6ff9d8) of official repo.
