@@ -2,8 +2,8 @@
 
 torchrun --standalone --nnodes=1 --nproc_per_node=4 \
     -m verl.trainer.fsdp_sft_trainer \
-    data.train_files=deepseek_sft_data.parquet \
-    data.val_files=deepseek_sft_data.parquet \
+    data.train_files=thuml/bytesized32-world-model-cot/generated_cot.parquet \
+    data.val_files=thuml/bytesized32-world-model-cot/generated_cot.parquet \
     data.train_batch_size=16 \
     data.prompt_key=prompt \
     data.response_key=reward_model \

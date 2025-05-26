@@ -4,8 +4,8 @@ set -x
 
 python3 -m verl.trainer.main_ppo \
     algorithm.adv_estimator=grpo \
-    data.train_files=train_state_difference_gold_data.parquet \
-    data.val_files=test_state_difference.parquet \
+    data.train_files=thuml/bytesized32-world-model-cot/train_state_difference_gold.parquet \
+    data.val_files=thuml/bytesized32-world-model-cot/test_state_difference.parquet \
     data.train_batch_size=128 \
     data.max_prompt_length=7192 \
     data.max_response_length=4096 \
@@ -42,7 +42,7 @@ python3 -m verl.trainer.main_ppo \
     actor_rollout_ref.rollout.max_num_batched_tokens=11288 \
     +data.sample_no_gold_data=True \
     +data.sample_no_gold_data_num=7278 \   # 1000 for task-specific reward
-    +data.sample_no_gold_data_file=train_state_difference_no_gold_data.parquet \
+    +data.sample_no_gold_data_file=thuml/bytesized32-world-model-cot/train_state_difference_non_gold.parquet \
     +data.dataset_type=text_game_dataset \
     +reward_model.text_game_reward_type=binary \  # task_specific for task-specific reward
     $@ | tee verl_vgpt.log

@@ -30,7 +30,7 @@ All data has been uploaded to [Hugging Face](https://huggingface.co/datasets/thu
 ### Text Game
 
 ```bash
-bash verl/examples/sft/text_game_simulator/run_text_game_simulator_sft.sh
+bash verl/examples/sft/text_game/run_text_game_sft.sh
 ```
 
 ### Web Page
@@ -56,15 +56,8 @@ You have to specify the directory for LoRA weights in the script.
 Run the following command. This command uses binary reward by default. If you want to use the task-specific reward described in the paper, simply modify the two parameters ``data.sample_no_gold_data_num`` and ``reward_model.text_game_reward_type`` as indicated in the comments.
 
 ```bash
-bash examples/grpo_trainer/run_text_game_simulator_rl.sh \
-    data.train_files=train_state_difference_gold_data.parquet \
-    data.val_files=test_state_difference.parquet \
-    actor_rollout_ref.model.path=thuml/bytesized32-world-model-base \
-    trainer.default_local_dir=log/rlvr_text_game_simulator_experiment \
-    trainer.project_name=verl_grpo_text_game_simulator \
-    trainer.experiment_name=grpo_text_game_simulator_binary_reward \
+bash examples/grpo_trainer/run_text_game_rl.sh \
     +data.sample_no_gold_data_num=7278 \   # 1000 for task-specific reward
-    +data.sample_no_gold_data_file=train_state_difference_no_gold_data.parquet \
     +reward_model.text_game_reward_type=binary  # =task_specific for task-specific reward
 ```
 
