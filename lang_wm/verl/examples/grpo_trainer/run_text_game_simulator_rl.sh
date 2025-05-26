@@ -41,4 +41,5 @@ python3 -m verl.trainer.main_ppo \
     +data.sample_no_gold_data=True \
     +data.sample_no_gold_data_num=7278 \   # 1000 for task-specific reward
     +data.sample_no_gold_data_file=/dev/null/train_state_difference_no_gold_data.parquet \
-    +reward_model.reward_type=binary  # task_specific for task-specific reward
+    +data.dataset_type=text_game_dataset \
+    +reward_model.text_game_reward_type=binary  # task_specific for task-specific reward

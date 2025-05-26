@@ -21,6 +21,7 @@ from collections import defaultdict
 
 import torch
 import numpy as np
+import random
 from torch.utils.data import Dataset
 from transformers import PreTrainedTokenizer, ProcessorMixin
 
@@ -72,7 +73,7 @@ def process_image(image: dict, max_pixels: int = 2048 * 2048, min_pixels: int = 
     return image
 
 
-class RLHFDataset(Dataset):
+class RLHFTextGameDataset(Dataset):
     """
     We assume the dataset contains a column that contains prompts and other information
     """
@@ -88,7 +89,10 @@ class RLHFDataset(Dataset):
                  cache_dir='~/.cache/verl/rlhf',
                  chat_template_func=None,
                  return_raw_chat=False,
-                 truncation='error'):
+                 truncation='error',
+                 sample_no_gold_data=False,
+                 sample_no_gold_data_num=0,
+                 sample_no_gold_data_file=""):
         if not isinstance(parquet_files, (List, ListConfig)):
             parquet_files = [parquet_files]
 
@@ -112,6 +116,13 @@ class RLHFDataset(Dataset):
         self.serialize_dataset = False
         self._download()
         self._read_files_and_tokenize()
+
+        if sample_no_gold_data:
+            no_gold_dataframes = [pd.read_parquet(sample_no_gold_data_file)]
+            self.no_gold_dataframe = pd.concat(no_gold_dataframes)
+            self.no_gold_data_num = sample_no_gold_data_num
+        else:
+            self.no_gold_data_num = 0
 
     def _download(self, use_origin_parquet=False):
         from verl.utils.fs import copy_to_local
@@ -149,13 +160,17 @@ class RLHFDataset(Dataset):
             print(r'old dataloader ckpt file is used, please train from scratch for better ckpt performance')
 
     def __len__(self):
-        return len(self.dataframe)
+        return len(self.dataframe) + self.no_gold_data_num
 
     def __getitem__(self, item):
         """
         Note that we also return the raw_input_ids so that it can be combined with other chat template
         """
-        row_dict: dict = self.dataframe.iloc[item].to_dict()
+        if item >= len(self.dataframe):
+            no_gold_data_index = random.randint(0, len(self.no_gold_dataframe)-1)
+            row_dict: dict = self.no_gold_dataframe.iloc[no_gold_data_index].to_dict()
+        else:
+            row_dict: dict = self.dataframe.iloc[item].to_dict()
 
         chat = row_dict.pop(self.prompt_key)
 

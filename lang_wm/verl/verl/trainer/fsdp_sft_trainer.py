@@ -387,7 +387,7 @@ class FSDPSFTTrainer(object):
                 else:
                     dp_size = 1
                 n_micro_batches = self.config.data.train_batch_size // self.config.data.micro_batch_size_per_gpu
-                loss = torch.sum(loss) / valid_token_this_rank * dp_size * n_micro_batches
+                loss = torch.sum(loss) / valid_token_this_rank * dp_size / n_micro_batches
 
                 if do_backward:
                     loss.backward()

@@ -21,11 +21,11 @@ class NaiveRewardManager:
     """The reward manager.
     """
 
-    def __init__(self, tokenizer, num_examine, compute_score=None, reward_type="binary") -> None:
+    def __init__(self, tokenizer, num_examine, compute_score=None, text_game_reward_type="binary") -> None:
         self.tokenizer = tokenizer
         self.num_examine = num_examine  # the number of batches of decoded responses to print to the console
         self.compute_score = compute_score or _default_compute_score
-        self.reward_type = reward_type
+        self.text_game_reward_type = text_game_reward_type
 
     def __call__(self, data: DataProto):
         """We will expand this function gradually based on the available datasets"""
@@ -67,7 +67,7 @@ class NaiveRewardManager:
                 solution_str=response_str,
                 ground_truth=ground_truth,
                 extra_info=extra_info,
-                reward_type=self.reward_type
+                text_game_reward_type=self.text_game_reward_type
             )
             reward_tensor[i, valid_response_length - 1] = score
 

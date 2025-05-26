@@ -39,6 +39,7 @@ from verl.trainer.ppo import core_algos
 from verl.utils.seqlen_balancing import get_seqlen_balanced_partitions, log_seqlen_unbalance
 from verl.utils.checkpoint.checkpoint_manager import find_latest_ckpt_path
 from verl.utils.dataset.rl_dataset import RLHFDataset, collate_fn
+from verl.utils.dataset.rl_dataset_for_text_game_simulator import RLHFTextGameDataset
 from verl.utils.tracking import ValidationGenerationsLogger
 from torch.utils.data import RandomSampler, SequentialSampler
 from torchdata.stateful_dataloader import StatefulDataLoader
@@ -538,18 +539,29 @@ class RayPPOTrainer(object):
 
     def _create_dataloader(self):
         # TODO: we have to make sure the batch size is divisible by the dp size
-        self.train_dataset = RLHFDataset(parquet_files=self.config.data.train_files,
-                                         tokenizer=self.tokenizer,
-                                         processor=self.processor,
-                                         prompt_key=self.config.data.prompt_key,
-                                         image_key=self.config.data.get('image_key', 'images'),
-                                         max_prompt_length=self.config.data.max_prompt_length,
-                                         filter_prompts=self.config.data.get('need_filter', True),
-                                         return_raw_chat=self.config.data.get('return_raw_chat', False),
-                                         truncation='error',
-                                         sample_no_gold_data=self.config.data.get('sample_no_gold_data', False),
-                                         sample_no_gold_data_num=self.config.data.get('sample_no_gold_data_num', 0),
-                                         sample_no_gold_data_file=self.config.data.get('sample_no_gold_data_file', ""))
+        if self.config.data.get('dataset_type', "null") == "text_game_dataset":
+            self.train_dataset = RLHFTextGameDataset(parquet_files=self.config.data.train_files,
+                                                     tokenizer=self.tokenizer,
+                                                     processor=self.processor,
+                                                     prompt_key=self.config.data.prompt_key,
+                                                     image_key=self.config.data.get('image_key', 'images'),
+                                                     max_prompt_length=self.config.data.max_prompt_length,
+                                                     filter_prompts=self.config.data.get('need_filter', True),
+                                                     return_raw_chat=self.config.data.get('return_raw_chat', False),
+                                                     truncation='error',
+                                                     sample_no_gold_data=self.config.data.get('sample_no_gold_data', False),
+                                                     sample_no_gold_data_num=self.config.data.get('sample_no_gold_data_num', 0),
+                                                     sample_no_gold_data_file=self.config.data.get('sample_no_gold_data_file', ""))
+        else:
+            self.train_dataset = RLHFDataset(parquet_files=self.config.data.train_files,
+                                             tokenizer=self.tokenizer,
+                                             processor=self.processor,
+                                             prompt_key=self.config.data.prompt_key,
+                                             image_key=self.config.data.get('image_key', 'images'),
+                                             max_prompt_length=self.config.data.max_prompt_length,
+                                             filter_prompts=self.config.data.get('need_filter', True),
+                                             return_raw_chat=self.config.data.get('return_raw_chat', False),
+                                             truncation='error')
         # use sampler for better ckpt resume
         if self.config.data.shuffle:
             train_dataloader_generator = torch.Generator()

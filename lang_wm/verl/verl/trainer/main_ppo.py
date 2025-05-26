@@ -138,10 +138,10 @@ def main_task(config, compute_score=None):
         reward_manager_cls = PrimeRewardManager
     else:
         raise NotImplementedError
-    reward_fn = reward_manager_cls(tokenizer=tokenizer, num_examine=0, compute_score=compute_score, reward_type=config.reward_model.get("reward_type", "binary"))
+    reward_fn = reward_manager_cls(tokenizer=tokenizer, num_examine=0, compute_score=compute_score, text_game_reward_type=config.reward_model.get("text_game_reward_type", "binary"))
 
     # Note that we always use function-based RM for validation
-    val_reward_fn = reward_manager_cls(tokenizer=tokenizer, num_examine=1, compute_score=compute_score, reward_type=config.reward_model.get("reward_type", "binary"))
+    val_reward_fn = reward_manager_cls(tokenizer=tokenizer, num_examine=1, compute_score=compute_score, text_game_reward_type=config.reward_model.get("text_game_reward_type", "binary"))
 
     resource_pool_manager = ResourcePoolManager(resource_pool_spec=resource_pool_spec, mapping=mapping)
 

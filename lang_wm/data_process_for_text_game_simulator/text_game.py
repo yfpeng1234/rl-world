@@ -271,7 +271,7 @@ def evaluate(prediction, target, last_action, evaluate_score=False):
         return num_errors, out_str
 
 
-def compute_score_(solution_str, ground_truth, extra_info, reward_type="binary"):
+def compute_score_(solution_str, ground_truth, extra_info, text_game_reward_type="binary"):
     if "The final answer is:" in solution_str:
         answer = solution_str.split("The final answer is:")[-1].strip()
     elif "the final answer is:" in solution_str:
@@ -314,7 +314,7 @@ def compute_score_(solution_str, ground_truth, extra_info, reward_type="binary")
         item_score = num_correct / (num_correct + num_errors)
         score_score = num_correct_score / (num_correct_score + num_score_errors)
 
-        if reward_type == "binary":
+        if text_game_reward_type == "binary":
             return int(item_score == 1 and score_score == 1)
 
         # only consider gold states
@@ -370,8 +370,8 @@ def compute_score_(solution_str, ground_truth, extra_info, reward_type="binary")
                 correct_gold_num_record) / len(correct_gold_num_record)
 
 
-def compute_score(solution_str, ground_truth, extra_info, reward_type="binary"):
+def compute_score(solution_str, ground_truth, extra_info, text_game_reward_type="binary"):
     try:
-        return compute_score_(solution_str, ground_truth, extra_info, reward_type)
+        return compute_score_(solution_str, ground_truth, extra_info, text_game_reward_type)
     except:
         return 0

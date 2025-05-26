@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 import json
-from llm_simulator import compute_score
+from text_game import compute_score
 from tqdm import tqdm
 import random
 
