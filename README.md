@@ -30,7 +30,7 @@ At the moment we provide the following models and datasets:
 | Language | Dataset     | Text game          | [bytesized32-world-model-cot](https://huggingface.co/datasets/thuml/bytesized32-world-model-cot) |
 | Language | World model | Text game          | [bytesized32-world-model-sft](https://huggingface.co/thuml/bytesized32-world-model-sft) |
 | Language | World model | Text game          | [bytesized32-world-model-rlvr-binary-reward](https://huggingface.co/thuml/bytesized32-world-model-rlvr-binary-reward) |
-| Language | World model | Text game          | [bytesized32-world-model-rlvr-task-specfic-reward](https://huggingface.co/thuml/bytesized32-world-model-rlvr-task-specfic-reward) |
+| Language | World model | Text game          | [bytesized32-world-model-rlvr-task-specific-reward](https://huggingface.co/thuml/bytesized32-world-model-rlvr-task-specific-reward) |
 | Language | Dataset     | Web navigation     | [webarena-world-model-cot](https://huggingface.co/datasets/thuml/webarena-world-model-cot) |
 | Language | World model | Web navigation     | [webarena-world-model-sft](https://huggingface.co/thuml/webarena-world-model-sft) |
 | Language | World model | Web navigation     | [webarena-world-model-rlvr](https://huggingface.co/thuml/webarena-world-model-rlvr) |
