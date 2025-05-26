@@ -1,14 +1,15 @@
+# using 8x80G A100 GPUS
 set -x
 
 python3 -m verl.trainer.main_ppo \
     algorithm.adv_estimator=grpo \
-    data.train_files=/dev/null/train_state_difference_gold_data.parquet \
-    data.val_files=/dev/null/test_state_difference.parquet \
+    data.train_files=train_state_difference_gold_data.parquet \
+    data.val_files=test_state_difference.parquet \
     data.train_batch_size=128 \
     data.max_prompt_length=7192 \
     data.max_response_length=4096 \
     data.need_filter=False \
-    actor_rollout_ref.model.path=/dev/null/sft_data \
+    actor_rollout_ref.model.path=thuml/bytesized32-world-model-base \
     actor_rollout_ref.actor.optim.lr=1e-6 \
     actor_rollout_ref.model.use_remove_padding=True \
     actor_rollout_ref.actor.ppo_mini_batch_size=64 \
@@ -29,17 +30,18 @@ python3 -m verl.trainer.main_ppo \
     algorithm.kl_ctrl.kl_coef=0.001 \
     trainer.critic_warmup=0 \
     trainer.logger="['console','wandb']" \
-    trainer.project_name='verl_grpo_llm_simulator_may' \
-    trainer.experiment_name='grpo_llm_simulator_gold_100_no_gold_sampled_40_best_sft_epoch_10_binary_reward' \
+    trainer.project_name=verl_grpo_text_game_simulator \
+    trainer.experiment_name=grpo_text_game_simulator_binary_reward \
     trainer.n_gpus_per_node=8 \
     trainer.nnodes=1 \
     trainer.save_freq=20 \
     trainer.test_freq=20 \
     trainer.total_epochs=15 \
-    trainer.default_local_dir=log/rlvr_experiment \
+    trainer.default_local_dir=log/rlvr_text_game_simulator_experiment \
     actor_rollout_ref.rollout.max_num_batched_tokens=11288 \
     +data.sample_no_gold_data=True \
     +data.sample_no_gold_data_num=7278 \   # 1000 for task-specific reward
-    +data.sample_no_gold_data_file=/dev/null/train_state_difference_no_gold_data.parquet \
+    +data.sample_no_gold_data_file=train_state_difference_no_gold_data.parquet \
     +data.dataset_type=text_game_dataset \
-    +reward_model.text_game_reward_type=binary  # task_specific for task-specific reward
+    +reward_model.text_game_reward_type=binary \  # task_specific for task-specific reward
+    $@ | tee verl_vgpt.log

@@ -31,8 +31,14 @@ Please download them and place them directly in this folder.
 ### Text Game Simulator
 Run the following command. Please modify the following paths: training set, validation set, model, and output. (Since we select the best epoch based on accuracy on the validation set rather than loss, we do not separately split a validation set for SFT. You can simply use the same path for both the training and validation sets.)
 
-```
-bash verl/examples/sft/text_game_simulator/run_text_game_simulator_sft.sh
+```bash
+bash verl/examples/sft/text_game_simulator/run_text_game_simulator_sft.sh \
+    data.train_files=deepseek_sft_data.parquet \
+    data.val_files=deepseek_sft_data.parquet \
+    model.partial_pretrain=deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B \
+    trainer.default_local_dir=log/sft_text_game_simulator_experiment \
+    trainer.project_name=text_game_simulator_sft \
+    trainer.experiment_name=text_game_simulator_deepseek_generated_data_sft
 ```
 
 ### Web Page
@@ -60,8 +66,17 @@ You have to specify the directory for LoRA weights in the script.
 ### Text Game Simulator
 Run the following command. This command uses binary reward by default. If you want to use the task-specific reward described in the paper, simply modify the two parameters ``data.sample_no_gold_data_num`` and ``reward_model.text_game_reward_type`` as indicated in the comments.
 
-```
-bash examples/grpo_trainer/run_web_agnet_rl.sh
+```bash
+bash examples/grpo_trainer/run_text_game_simulator_rl.sh \
+    data.train_files=train_state_difference_gold_data.parquet \
+    data.val_files=test_state_difference.parquet \
+    actor_rollout_ref.model.path=thuml/bytesized32-world-model-base \
+    trainer.default_local_dir=log/rlvr_text_game_simulator_experiment \
+    trainer.project_name=verl_grpo_text_game_simulator \
+    trainer.experiment_name=grpo_text_game_simulator_binary_reward \
+    +data.sample_no_gold_data_num=7278 \   # 1000 for task-specific reward
+    +data.sample_no_gold_data_file=train_state_difference_no_gold_data.parquet \
+    +reward_model.text_game_reward_type=binary  # task_specific for task-specific reward
 ```
 
 ### Web Page
