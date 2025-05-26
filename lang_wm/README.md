@@ -19,11 +19,8 @@ pip install -e .
 All data has been uploaded to [TODO]. You can either download them directly or generate them by following the ``README.md`` in ``data_process_for_text_game_simulator``:
 
 ###  Web Page
-The SFT and RLVR training datasets have been uploaded to Hugging Face.
 
-The content of both datasets is essentially the same, with only the key names differing to match their respective training scripts.
-
-Please download them and place them directly in this folder.
+All data has been uploaded to https://huggingface.co/datasets/thuml/webarena-world-model-cot.
 
 ## Supervised Fine-Tuning (SFT)
 
@@ -92,7 +89,7 @@ The trained model will be saved in `default_local_dir` specified in the script.
 To merge weights, run the following command:
 
 ```bash
-python verl/scripts/model_merger.py --local_dir log/rl/DeepSeek-R1-Distill-Qwen-1.5B-merged-grpo-reward-v1-p-0.1-final-v2/checkpoints/global_step_xxxx/actor --output_dir <output_dir> --backend fsdp --hf_model_path deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B 
+python verl/scripts/model_merger.py --local_dir log/rl/webagent-rlvr/checkpoints/global_step_xxxx/actor --output_dir <output_dir> --backend fsdp --hf_model_path deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B 
 ```
 
 ## Web Agents with language world model
