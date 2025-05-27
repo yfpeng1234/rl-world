@@ -45,7 +45,7 @@ if __name__ == "__main__":
     dataset_name = args.dataset_name
     ds = tfds.builder_from_directory(builder_dir=get_dataset_path(args.input_path, dataset_name)).as_dataset()
     display_key = DISPLAY_KEY.get(dataset_name, 'image')
-    root_path = os.path.join(args.output_path, dataset_name)
+    root_path = os.path.join(args.output_path, 'RT-1_processed')
     os.makedirs(root_path, exist_ok=True)
 
     num_episodes = 0

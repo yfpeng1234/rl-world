@@ -128,6 +128,33 @@ class Evaluator(nn.Module):
                 self.ssim(video_1, video_2).mean(),
                 lpips.mean(),
             )
+    
+    @custom_fwd(cast_inputs=torch.float32)
+    def compute_samplewise(self, video_1, video_2, return_std=False):
+        # video_1: ground-truth
+        # video_2: reconstruction or prediction
+
+        if True:
+            B, T, C, H, W = video_1.shape
+            video_1 = video_1.reshape(B * T, C, H, W)
+            video_2 = video_2.reshape(B * T, C, H, W)
+            
+            if self.max_batchsize is not None and video_1.shape[0] > self.max_batchsize:
+                lpips = batch_forward(
+                    self.max_batchsize,
+                    video_1 * 2 - 1, video_2 * 2 - 1,
+                    lambda x1, x2: self.lpips(x1, x2).mean((1, 2, 3)),
+                )
+            else:
+                lpips = self.lpips(video_1 * 2 - 1, video_2 * 2 - 1).mean((1, 2, 3))
+
+            return (
+                self.mae(video_1, video_2).reshape(B,T,C,H,W).mean(dim=(1,2,3,4)),
+                self.mse(video_1, video_2).reshape(B,T,C,H,W).mean(dim=(1,2,3,4)),
+                self.psnr(video_1, video_2).reshape(B,T).mean(dim=1),
+                self.ssim(video_1, video_2).reshape(B,T).mean(dim=1),
+                lpips.reshape(B,T).mean(dim=1),
+            )
 
 
 @torch.no_grad()

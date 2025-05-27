@@ -19,6 +19,7 @@ import os
 from pathlib import Path
 import imageio
 import copy
+import matplotlib.pyplot as plt
 
 from vllm import LLM, SamplingParams
 
@@ -31,7 +32,7 @@ from tqdm.auto import tqdm
 
 from safetensors.torch import load_file
 import transformers
-from transformers.models.llama.modeling_llama import LlamaRMSNorm
+#from transformers.models.llama.modeling_llama import LlamaRMSNorm
 from transformers import (
     MODEL_MAPPING,
     AutoConfig,
@@ -56,6 +57,28 @@ require_version("datasets>=1.8.0", "To fix: pip install -r examples/pytorch/lang
 
 MODEL_CONFIG_CLASSES = list(MODEL_MAPPING.keys())
 
+def plot_videos_grid(video_list, save_path):
+    """
+    video_list: [video1, video2, video3, ...], each video is (T, H, W, C)
+    """
+    num_videos = len(video_list)
+    T, H, W, C = video_list[0].shape
+    assert all(v.shape == (T, H, W, C) for v in video_list)
+    
+    fig, axes = plt.subplots(num_videos, T, figsize=(2*T, 2*num_videos))
+    if num_videos == 1:
+        axes = np.expand_dims(axes, 0)
+    for row in range(num_videos):
+        for col in range(T):
+            axes[row, col].imshow(video_list[row][col])
+            axes[row, col].axis('off')
+            # 第一行加上时间标注
+            if row == 0:
+                axes[row, col].set_title(f't = {col+1}', fontsize=14)
+    plt.tight_layout()
+    plt.subplots_adjust(top=0.85)
+    plt.savefig(save_path)
+    plt.close()
 
 def get_dataloaders(args):
     # DataLoaders creation:
@@ -180,6 +203,8 @@ def parse_args():
 
     parser.add_argument('--start_completed_steps', default=None, type=int)
 
+    parser.add_argument('--debug', default=False, action='store_true')
+
     # datasets
     parser.add_argument("--segment_length", type=int, default=5,
                         help="The length of the segmented trajectories to use for the training.")
@@ -271,6 +296,14 @@ def evaluate(args, accelerator, processor, tokenizer, model, eval_dataloader, ev
     eval_iters = min(len(eval_dataloader), args.max_eval_iters)
     bar = tqdm(range(eval_iters), desc="validation", disable=not accelerator.is_local_main_process)
 
+    if args.debug:
+        mae_list=[]
+        mse_list=[]
+        psnr_list=[]
+        ssim_list=[]
+        lpips_list=[]
+        video_index=0
+
     for i, batch in enumerate(eval_dataloader):
         if i == args.max_eval_iters:
             break
@@ -326,7 +359,7 @@ def evaluate(args, accelerator, processor, tokenizer, model, eval_dataloader, ev
                     if repeating.all():
                         continue
                 output_tokens = output_tokens.clamp(0, args.visual_token_num - 1).long()
-
+                
                 output_tokens = output_tokens.reshape(*output_tokens.shape[:-1], 8*10)  # TODO: magic number
                 with torch.autocast(device_type="cuda", dtype=torch.bfloat16):
                     if args.max_decode_batchsize is not None:
@@ -371,16 +404,40 @@ def evaluate(args, accelerator, processor, tokenizer, model, eval_dataloader, ev
         if args.reject_repeating:
             print(sample_non_repeating_num)
 
+        if args.debug:
+            video_path=os.path.join(args.output_dir, "compare", f"val-samples-{completed_steps}")
+            os.makedirs(video_path, exist_ok=True)
+            for w in range(batch_size):
+                gt=(pixel_values[w,1:].clamp(0.0,1.0).permute(0,2,3,1).detach().cpu().numpy()*255).astype(np.uint8)
+                recon=(torch.cat([pixel_values[w,[1]],sample_recon_outputs[w]],dim=0).clamp(0.0,1.0).permute(0,2,3,1).detach().cpu().numpy()*255).astype(np.uint8)
+                error=(np.abs(gt.astype(float)-recon.astype(float))).astype(np.uint8)
+                plot_videos_grid([gt,recon,error],os.path.join(video_path,f"val-samples-{completed_steps}-{video_index}.png"))
+                video_index+=1
+
         if args.use_frame_metrics:
             # pixel_values can be 1.0000001192092896 numerically
             gt = pixel_values[:, 2:].clamp(0.0, 1.0)
             if args.n_sample == 1:
-                mae_value, mse_value, psnr_value, ssim_value, lpips_value = evaluator(gt, sample_recon_outputs)
-                bar.set_postfix({
-                    "mae": mae_value.item(),
-                    "mse": mse_value.item(), "psnr": psnr_value.item(), "ssim": ssim_value.item(), "lpips": lpips_value.item(),
-                    "batch_size": batch_size,
-                })
+                if not args.debug:
+                    mae_value, mse_value, psnr_value, ssim_value, lpips_value = evaluator(gt, sample_recon_outputs)
+                    bar.set_postfix({
+                        "mae": mae_value.item(),
+                        "mse": mse_value.item(), "psnr": psnr_value.item(), "ssim": ssim_value.item(), "lpips": lpips_value.item(),
+                        "batch_size": batch_size,
+                    })
+                else:
+                    mae_value, mse_value, psnr_value, ssim_value, lpips_value = evaluator.compute_samplewise(gt, sample_recon_outputs)
+                    
+                    mae_list+=mae_value.tolist()
+                    mse_list+=mse_value.tolist()
+                    psnr_list+=psnr_value.tolist()
+                    ssim_list+=ssim_value.tolist()
+                    lpips_list+=lpips_value.tolist()
+                    bar.set_postfix({
+                        "mae": mae_value.mean().item(),
+                        "mse": mse_value.mean().item(), "psnr": psnr_value.mean().item(), "ssim": ssim_value.mean().item(), "lpips": lpips_value.mean().item(),
+                        "batch_size": batch_size,
+                    })
             else:
                 (mae_value, mse_value, psnr_value, ssim_value, lpips_value), (mae_std, mse_std, psnr_std, ssim_std, lpips_std) = evaluator(gt, sample_recon_outputs, return_std=True)
                 bar.set_postfix({
@@ -410,6 +467,15 @@ def evaluate(args, accelerator, processor, tokenizer, model, eval_dataloader, ev
                 'eval/lpips': torch.cat(lpips_values, 0).mean().item(),
             })
         accelerator.log(eval_logs, step=completed_steps)
+
+        if args.debug:
+            # save mae, mse, psnr, ssim, lpips in numpy array
+            os.makedirs(os.path.join(args.output_dir, "statistics"), exist_ok=True)
+            np.save(os.path.join(args.output_dir, "statistics", "mae.npy"), mae_list)
+            np.save(os.path.join(args.output_dir, "statistics", "mse.npy"), mse_list)
+            np.save(os.path.join(args.output_dir, "statistics", "psnr.npy"), psnr_list)
+            np.save(os.path.join(args.output_dir, "statistics", "ssim.npy"), ssim_list)
+            np.save(os.path.join(args.output_dir, "statistics", "lpips.npy"), lpips_list)
 
     if accelerator.is_main_process:
         return eval_logs
@@ -525,7 +591,7 @@ def start_train():
     if args.start_completed_steps is not None:
         completed_steps = args.start_completed_steps
     else:
-        completed_steps = os.path.basename(model_path).split('_')[1] if os.path.exists(model_path) else 0
+        completed_steps = 0
     eval_logs = evaluate(args, accelerator, processor, tokenizer, model,
                          eval_dataloader, 
                          evaluator, completed_steps=completed_steps)

@@ -1,0 +1,1 @@
+/home/ypengbx/google-cloud-sdk/bin/gsutil -m cp -r gs://gresearch/robotics/fractal20220817_data $DATASET_PATH
