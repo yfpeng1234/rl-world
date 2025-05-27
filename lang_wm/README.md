@@ -19,7 +19,7 @@ pip install -e .
 
 All data has been uploaded to [Hugging Face](https://huggingface.co/datasets/thuml/bytesized32-world-model-cot).
 
-You can either download them directly or generate them yourself by following the ``README.md`` in ``data_process/text_game``.
+You can either download them directly or generate them yourself by following instructions in [``data_process/text_game``](data_process/text_game).
 
 ###  Web Page
 
@@ -77,7 +77,7 @@ python verl/scripts/model_merger.py --local_dir log/xxxx/checkpoints/global_step
 
 ## Downstream Task: Model Predictive Control for Web Agents
 
-Code and instruction can be found in ``webagent/``
+Code and instructions can be found in [``webagent``](webagent).
 
 ## Acknowledgements
 
