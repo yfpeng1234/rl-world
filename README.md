@@ -43,7 +43,7 @@ At the moment we provide the following models and datasets:
 
 ## 💬 Evaluating Language World Models
 
-See [`lang_wm`](/lang_wm) (stay tuned!):
+See [`lang_wm`](/lang_wm):
 
 - Text game state prediction
 - Web page state prediction
