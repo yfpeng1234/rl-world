@@ -25,7 +25,7 @@ We pioneer training world models through RLVR:
 
 ## 🤗 Models and Datasets
 
-At the moment we provide the following models and datasets:
+At the moment, we provide the following models and datasets:
 
 | Modality | Type        | Domain             | Name                                                         |
 | -------- | ----------- | ------------------ | ------------------------------------------------------------ |
@@ -66,13 +66,13 @@ See [`vid_wm`](/vid_wm):
 
 - [x] Video world model with RLVR
 - [x] Pre-trained & post-trained video world model weights
-- [x] Real2sim policy evaluation with video world model
+- [x] Real2sim policy evaluation with video world models
 - [x] Text game SFT data
 - [x] Web page SFT data
 - [x] Language world model on text games with RLVR
 - [x] Language world model on web pages with RLVR
-- [x] Pre-trained & post-trained language world model weights
-- [x] Web agents with language world model
+- [x] Post-trained language world model weights
+- [x] Web agents with language world models
 
 ## 📜 Citation
 
@@ -89,7 +89,7 @@ If you find this project useful, please cite our paper as:
 
 ## 🤝 Contact
 
-If you have any question, please contact wujialong0229@gmail.com.
+If you have any questions, please contact wujialong0229@gmail.com.
 
 ## 💡 Acknowledgement
 
