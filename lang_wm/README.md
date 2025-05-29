@@ -8,7 +8,7 @@
 
 ```bash
 # Python 3.10 or 3.11 recommended
-conda create -n verl python=3.10
+conda create -n lang_wm python=3.10
 cd verl
 pip install -e .
 ```
@@ -51,15 +51,17 @@ You have to specify the directory for LoRA weights in the script.
 
 ## Post-training with RLVR
 
-### Text Game Simulator
+### Text Game
 
-Run the following command. This command uses binary reward by default. If you want to use the task-specific reward described in the paper, simply modify the two parameters ``data.sample_no_gold_data_num`` and ``reward_model.text_game_reward_type`` as indicated in the comments.
+Run the following command.
 
 ```bash
 bash examples/grpo_trainer/run_text_game_rl.sh \
     +data.sample_no_gold_data_num=7278 \   # 1000 for task-specific reward
     +reward_model.text_game_reward_type=binary  # =task_specific for task-specific reward
 ```
+
+This command uses binary reward by default. If you want to use the task-specific reward described in the paper, simply modify the two parameters ``data.sample_no_gold_data_num`` and ``reward_model.text_game_reward_type`` as indicated in the comments.
 
 ### Web Page
 
